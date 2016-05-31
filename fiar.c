@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "board.h"
+#include "ai.h"
 
 #define ROWS 6
 #define COLS 7
@@ -37,11 +38,49 @@ err_handler:
 		}
 		print_board(game);
 	}
+	else if ((argc==2 || argc==3) && !strcmp(argv[1], "play")) {
+		int j;
+		if (argc==3 && !strcmp(argv[2], "red"))
+			goto red;
+		while (1) {
+			print_board(game);
+			do {
+				printf("Your move: ");
+				if (scanf("%d", &j) != 1) {
+					printf("\n");
+					goto out;
+				}
+			} while (!can_play(game, j));
+			play(game, j);
+			if (victory(game, j)) {
+				printf("You've won!\n");
+				break;
+			}
+			else {
+				int ret = negamax(game, DEFEAT, VICTORY, 12, &j);
+red:
+				if (ret == CUT)
+					printf("I've got no idea what to do...\n"
+						"I'm gonna try %d.\n", j);
+				else
+					printf("I'll play %d (score %d)\n", j, ret);
+				play(game, j);
+				if (victory(game, j)) {
+					printf("You've lost!\n");
+					break;
+				}
+			}
+		}
+		print_board(game);
+	}
 	else {
 		fprintf(stderr, "usage:\t%s display moves\n", argv[0]);
+		fprintf(stderr, "\t%s play [yellow|red]\n", argv[0]);
 		fprintf(stderr, "try:\t%s display 01221\n", argv[0]);
+		fprintf(stderr, "\t%s play\n", argv[0]);
 		return 1;
 	}
+out:
 	destroy_game(game);
 	return 0;
 }
