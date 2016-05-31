@@ -47,7 +47,8 @@ void update_board(const Game *game, const int i, const int j, const int v) {
 }
 
 int can_play(Game * const game, const int j) {
-	return INDEX(game, game->rows, j) < game->rows;
+	return j>=0 && j<game->cols &&
+		INDEX(game, game->rows, j) < game->rows;
 }
 
 void play(Game *game, const int j) {
