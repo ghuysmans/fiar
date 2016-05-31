@@ -91,12 +91,14 @@ int count(Game * const game, int i, int j, const int di, const int dj) {
 	int last = 0;
 	for (; i>=0 && i<game->rows && j>=0 && j<game->cols; i+=di, j+=dj) {
 		TOKEN cur = INDEX(game, i, j);
-		if (EMPTY(last) || EMPTY(cur)) {
+		if ((!EMPTY(last) && !EMPTY(cur)) &&
+				(RED(last) && RED(cur) ||
+				 YELLOW(last) && YELLOW(cur)))
+			ct++;
+		else {
 			best = MAX(ct, best);
 			ct = 1; //reset, don't count empty cells
 		}
-		else if (RED(last) && RED(cur) || YELLOW(last) && YELLOW(cur))
-			ct++;
 		last = cur;
 	}
 	return MAX(ct, best);
