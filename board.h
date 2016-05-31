@@ -20,12 +20,18 @@ typedef struct {
 void print_board(Game * const game);
 
 /**
- * Plays a move.
+ * Checks whether a given move can be played.
  * @param game Game object
- * @param i row
  * @param j column
  */
-void play(Game *game, const int i, const int j);
+int can_play(Game *game, const int j);
+
+/**
+ * Plays a legal move.
+ * @param game Game object
+ * @param j column
+ */
+void play(Game *game, const int j);
 
 /**
  * Undoes a move.
@@ -33,7 +39,7 @@ void play(Game *game, const int i, const int j);
  * @param i row
  * @param j column
  */
-void undo(Game *game, const int i, const int j);
+void undo(Game *game, const int j);
 
 /**
  * Creates a Game object.

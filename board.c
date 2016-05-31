@@ -46,14 +46,18 @@ void update_board(const Game *game, const int i, const int j, const int v) {
 	}
 }
 
-void play(Game *game, const int i, const int j) {
-	update_board(game, i, j, ++game->played);
+int can_play(Game *game, const int j) {
+	return INDEX(game, game->rows, j) < game->rows;
 }
 
-void undo(Game *game, const int i, const int j) {
+void play(Game *game, const int j) {
+	update_board(game, INDEX(game, game->rows, j), j, ++game->played);
+}
+
+void undo(Game *game, const int j) {
 	assert(game->played > 0);
 	game->played--;
-	update_board(game, i, j, 0);
+	update_board(game, --INDEX(game, game->rows, j), j, 0);
 }
 
 Game *create_game(const int rows, const int cols) {
