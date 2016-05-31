@@ -58,7 +58,7 @@ void play(Game *game, const int j) {
 void undo(Game *game, const int j) {
 	assert(game->played > 0);
 	game->played--;
-	update_board(game, --INDEX(game, game->rows, j), j, 0);
+	update_board(game, INDEX(game, game->rows, j)-1, j, 0);
 }
 
 Game *create_game(const int rows, const int cols) {
