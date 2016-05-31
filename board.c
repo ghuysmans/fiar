@@ -6,7 +6,10 @@
 #define RED(x) !((x) & 1)
 #define YELLOW(x) ((x) & 1)
 #define EMPTY(x) !(x)
-#define TO_CHAR(x) (EMPTY(x) ? '.' : (RED(x) ? 'R' : 'Y'))
+#define FG_BOLD(c,x) "\e[1m\e[3" c ";1m" x "\e[0m"
+#define FG(c,x) "\e[1m\e[3" c ";1m" x "\e[0m"
+#define TO_STR(x) (EMPTY(x) ? FG("4", "o") : \
+	(RED(x) ? FG_BOLD("1", "R") : FG_BOLD("3", "Y")))
 #define INDEX(g,i,j) g->board[g->cols*(i)+j]
 
 void print_board(Game * const game) {
@@ -18,7 +21,7 @@ void print_board(Game * const game) {
 	//tokens
 	for (i=game->rows-1; i>=0; i--) {
 		for (j=0; j<game->cols; j++)
-			printf("%c ", TO_CHAR(INDEX(game, i, j)));
+			printf("%s ", TO_STR(INDEX(game, i, j)));
 		printf("\n");
 	}
 }
