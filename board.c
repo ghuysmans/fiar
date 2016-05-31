@@ -16,7 +16,7 @@ void print_board(Game * const game) {
 		printf("%c ", INDEX(game, game->rows, j)==game->rows ? '*' : '0'+j);
 	printf("\n");
 	//tokens
-	for (i=0; i<game->rows; i++) {
+	for (i=game->rows-1; i>=0; i--) {
 		for (j=0; j<game->cols; j++)
 			printf("%c ", TO_CHAR(INDEX(game, i, j)));
 		printf("\n");
