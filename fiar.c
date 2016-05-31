@@ -13,8 +13,11 @@ int main(int argc, char *argv[]) {
 		while (*p) {
 			int col = *p - '0';
 			if (col>=0 && col<COLS) {
-				if (can_play(game, col))
+				if (can_play(game, col)) {
 					play(game, col);
+					if (victory(game, col))
+						printf("victory!\n");
+				}
 				else {
 					err = "illegal move";
 					goto err_handler;

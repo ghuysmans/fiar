@@ -2,6 +2,10 @@
 #define __BOARD_H
 
 
+#define MIN(a,b) ((a)<(b) ? (a) : (b))
+#define MAX(a,b) ((a)>(b) ? (a) : (b))
+
+
 #define TOKEN char
 typedef struct {
 	int played; //< moves count
@@ -50,8 +54,16 @@ Game *create_game(const int rows, const int cols);
 
 /**
  * Destroys a Game object.
+ * @param game Game object
  */
 void destroy_game(Game *game);
+
+/**
+ * Detects victory through the last token in column j.
+ * @param game Game object
+ * @param j column
+ */
+int victory(Game * const game, int j);
 
 
 #endif //__BOARD_H

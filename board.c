@@ -73,3 +73,37 @@ Game *create_game(const int rows, const int cols) {
 void destroy_game(Game *game) {
 	free(game);
 }
+
+/**
+ * Counts consecutive tokens owned by the same player.
+ * @param game Game object
+ * @param i row
+ * @param j column
+ * @param di i increment
+ * @param dj j increment
+ */
+int count(Game * const game, int i, int j, const int di, const int dj) {
+	int ct=1, best=1;
+	int last = 0;
+	for (; i>=0 && i<game->rows && j>=0 && j<game->cols; i+=di, j+=dj) {
+		TOKEN cur = INDEX(game, i, j);
+		if (EMPTY(last) || EMPTY(cur)) {
+			best = MAX(ct, best);
+			ct = 1; //reset, don't count empty cells
+		}
+		else if (RED(last) && RED(cur) || YELLOW(last) && YELLOW(cur))
+			ct++;
+		last = cur;
+	}
+	return MAX(ct, best);
+}
+
+int victory(Game * const game, const int j) {
+	const int i = INDEX(game, game->rows, j)-1;
+	const int m = MIN(game->rows-i-1, j);
+	return
+		count(game, 0, j, 1, 0) >= 4 ||
+		count(game, i, 0, 0, 1) >= 4 ||
+		count(game, i-MIN(i,j), j-MIN(i,j), 1, 1) >= 4 ||
+		count(game, i+m, j-m, -1, 1) >= 4;
+}
