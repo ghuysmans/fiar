@@ -24,7 +24,7 @@ void print_board(Game * const game);
  * @param game Game object
  * @param j column
  */
-int can_play(Game *game, const int j);
+int can_play(Game * const game, const int j);
 
 /**
  * Plays a legal move.
